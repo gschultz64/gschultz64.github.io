@@ -2,7 +2,6 @@ console.log('Javascript is a go');
 
 var currentPlayer = 'X';
 
-
 var gameBoard = [
   [document.getElementById('box1'), document.getElementById('box2'), document.getElementById('box3')],
   [document.getElementById('box4'), document.getElementById('box5'), document.getElementById('box6')],
@@ -26,11 +25,12 @@ for (var i=0; i<boxElements.length; i++) {
     } else {
       currentPlayer = 'X';
       alertBox.textContent = "Player 1, make a move.";
-      this.style.color = "yellow";
+      this.style.color = "orange";
     }
     console.log("box clicked");
     checkForWin();
   });
+  
 }
 
 var checkForWin = function () {
@@ -42,6 +42,7 @@ var checkForWin = function () {
         // Player 1 has won
         console.log("Player 1 has won due to row " + i);
         updateMessage("Player 1");
+        
       } else if (gameBoard[i][0].textContent === 'O') {
         // Player 2 has won
         console.log("Player 2 has won due to row " + i);
