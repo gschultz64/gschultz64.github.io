@@ -1,6 +1,7 @@
 // global variables
 
 var moves = 0;
+var moveArray = [];
 // colors available for the game board
 var colors = [
   '#3C989E', '#5DB5A4', '#F4CDA5', '#F57A82', '#E37B40', '#5E005E', '#AB2F52', '#41733F'
@@ -42,38 +43,52 @@ function clickAction() {
   var parsedId = parseInt(this.id);
   $(this).css("background-color", randomColors[parsedId]);
   console.log("box " + squares[parsedId] + " is " + randomColors[parsedId]);
-  countMoves();
-  
-
+  countMoves(randomColors[parsedId]);
   $('.moves').text(moves);
   checkForMatch();
 }
 
 // count player moves
-function countMoves() {
+function countMoves(color) {
   moves++;
+  moveArray.push(color);
+  console.log(moveArray)
 }
 
 function flipSquare() {
   for (let i = 0; i < squares.length; i++) {
     // click on square
     $(squares[i]).on('click', clickAction);
+  }
+}
 
+function takeTurn() {
+  if (moves % 2 === 0) {
+    if ($('.turn').text() == 'Player 1') {
+      $('.turn').text('Player 2').removeClass('blue').addClass('yellow');
+    } else if ($('.turn').text() == 'Player 2') {
+      $('.turn').text('Player 1').removeClass('yellow').addClass('blue');
+    }
   }
 }
 
 function checkForMatch() {
   // // Check for matching colors when two squares are "flipped"
-  if (moves == 2) {
-    // console.log($('previousElementSibling').style.backgroundColor);
-    if ($('div').css("background-color") == $('div').prev().css("background-color")) {
-      // 
-      console.log("You won!");
+  if (moves % 2 === 0) {
+    // console.log(this);
+    if (moveArray[moveArray.length - 1] == moveArray[moveArray.length - 2]) {
+      // $('.turn').text('You won!');
+      console.log('You won')
+      alert("You found a match!")
     } else {
-      console.log("Try again.");
+      // $('.turn').text("Try again.");
+      console.log('Try again.')
+      alert("Try again.")
     }
-  } 
+  } takeTurn();
 }
+
+
 
 // function winMessage() {
 // // Alert player if they win or lose
@@ -83,20 +98,6 @@ function checkForMatch() {
 
 // add disabled class to colors after match
 
-// have a timer, lose when timer runs out
-// var interval;
-// var startingTime = 60;
-// var remainingTime = 0;
-
-// function startTimer() {
-//   startingTime--;
-//   if(remainingTime <= 0) {
-//     //lose condition or game over
-//     console.log('the game is over');
-//   }
-//   $('.timer').append("<p>" + "0.00:" + remainingTime + "</p>");
-//   console.log('timer revealed');
-// }
 
 
 $(document).ready(function () {
@@ -128,11 +129,9 @@ $(document).ready(function () {
     shuffle(randomColors);
     moves = 0;
     $('.moves').text(moves);
-    $('.turn').text('Player ')
+    $('.turn').text('Player 1').removeClass('yellow').addClass('blue');
   });
-
 });
-
 // win conditions
 //  two colored divs need to match exactly 
 // when colors are matched, remove from randomColors? or keep them active and unclickable
